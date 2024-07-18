@@ -35,9 +35,9 @@ jobs:
       - name: Run SonarQube scan
         run: |
           $HOME/sonar-scanner/bin/sonar-scanner \
-          -Dsonar.projectKey=<Your_Project_Key> \
+          -Dsonar.projectKey=<codeReview> \
           -Dsonar.sources=. \
-          -Dsonar.host.url=http://<Your_SonarQube_Server_IP>:9000 \
+          -Dsonar.host.url=http://localhost:9000 \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Upload scan results
