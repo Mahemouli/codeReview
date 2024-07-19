@@ -29,6 +29,6 @@ jobs:
 
       - name: Run SonarQube scan
         run: |
-          C:\SonarQube\sonarqube-10.6.0.92116\bin\sonar-scanner.bat -Dsonar.verbose=true
+          C:\Sonaqube\sonar-scanner-6.1.0.4477-windows-x64\bin\sonar-scanner.bat -Dsonar.verbose=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
