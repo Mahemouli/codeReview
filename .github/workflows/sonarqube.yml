@@ -40,7 +40,7 @@ jobs:
           $HOME/sonar-scanner/bin/sonar-scanner \
           -Dsonar.projectKey=codeReview \
           -Dsonar.sources=. \
-          -Dsonar.host.url=http://<Your_SonarQube_Server_IP>:9000 \
+          -Dsonar.host.url=http://localhost:9000 \
           -Dsonar.login=$SONAR_TOKEN
 
       - name: Upload scan results
