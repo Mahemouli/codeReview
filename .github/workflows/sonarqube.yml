@@ -11,6 +11,7 @@ on:
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -40,17 +41,19 @@ jobs:
           echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
           echo "sonar.java.binaries=**/*.java" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
 
-      - name: List available shells
+      - name: Fix shebang in sonar-scanner
         run: |
-          cat /etc/shells
+          sed -i '1s|^.*$|#!/bin/bash|' $HOME/sonar-scanner/bin/sonar-scanner
 
-      - name: Fix file permissions
-        run: |
-          chmod +x $HOME/sonar-scanner/bin/sonar-scanner
+      - name: Print environment variables
+        run: printenv
+
+      - name: List files in sonar-scanner bin
+        run: ls -la $HOME/sonar-scanner/bin
 
       - name: Run SonarQube scan
         run: |
-          /bin/bash -c '$HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true'
+          /bin/bash $HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true
         env:
           JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64
           PATH: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64/bin:$PATH
