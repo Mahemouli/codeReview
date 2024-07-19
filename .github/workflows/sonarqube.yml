@@ -44,11 +44,12 @@ jobs:
         run: java -version
 
       - name: Run SonarQube scan
+        shell: bash
         env:
           JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64
           PATH: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64/bin:$PATH
         run: |
-          JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64 $HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true
+          $HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true
 
       - name: Upload scan results
         run: |
