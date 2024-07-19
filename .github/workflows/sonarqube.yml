@@ -41,6 +41,8 @@ jobs:
           echo "sonar.java.binaries=**/*.java" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
 
       - name: Run SonarQube scan
+        env:
+          JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64
         run: |
           $HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true
 
