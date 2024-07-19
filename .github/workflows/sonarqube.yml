@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'zulu'
+          distribution: 'temurin'
 
       - name: Cache SonarQube scanner
         uses: actions/cache@v2
@@ -33,13 +33,15 @@ jobs:
           unzip $HOME/sonar-scanner.zip -d $HOME/
           mv $HOME/sonar-scanner-4.6.2.2472-linux $HOME/sonar-scanner
 
+      - name: Configure SonarQube Scanner
+        run: |
+          echo "sonar.projectKey=codeReview" > $HOME/sonar-scanner/conf/sonar-scanner.properties
+          echo "sonar.host.url=https://ccde-61-95-213-22.ngrok-free.app/projects" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
+          echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
+
       - name: Run SonarQube scan
         run: |
-          $HOME/sonar-scanner/bin/sonar-scanner \
-          -Dsonar.projectKey=codeReview \
-          -Dsonar.sources=. \
-          -Dsonar.host.url=https://ccde-61-95-213-22.ngrok-free.app/projects \
-          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          $HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true
 
       - name: Upload scan results
         run: |
