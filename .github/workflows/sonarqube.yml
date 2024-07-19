@@ -40,16 +40,20 @@ jobs:
           echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
           echo "sonar.java.binaries=**/*.java" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
 
-      - name: Check Java version
-        run: java -version
+      - name: List available shells
+        run: |
+          cat /etc/shells
+
+      - name: Fix file permissions
+        run: |
+          chmod +x $HOME/sonar-scanner/bin/sonar-scanner
 
       - name: Run SonarQube scan
-        shell: bash
+        run: |
+          /bin/bash -c '$HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true'
         env:
           JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64
           PATH: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64/bin:$PATH
-        run: |
-          $HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true
 
       - name: Upload scan results
         run: |
