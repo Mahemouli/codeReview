@@ -24,7 +24,7 @@ jobs:
       - name: Cache SonarQube scanner
         uses: actions/cache@v3
         with:
-          path: C:\SonarQube\sonarqube-10.6.0.92116\bin
+          path: C:\Sonaqube\sonar-scanner-6.1.0.4477-windows-x64\bin
           key: ${{ runner.os }}-sonar
 
       - name: Run SonarQube scan
