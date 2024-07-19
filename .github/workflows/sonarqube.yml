@@ -18,7 +18,6 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'
           java-version: '17'
 
       - name: Cache SonarQube scanner
@@ -34,14 +33,12 @@ jobs:
           mv $HOME/sonar-scanner-4.6.2.2472-linux $HOME/sonar-scanner
 
       - name: Run SonarQube scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           $HOME/sonar-scanner/bin/sonar-scanner \
           -Dsonar.projectKey=codeReview \
           -Dsonar.sources=. \
-          -Dsonar.host.url=http://localhost:9000 \
-          -Dsonar.login=$SONAR_TOKEN
+          -Dsonar.host.url=https://ccde-61-95-213-22.ngrok-free.app/projects \
+          -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Upload scan results
         run: |
