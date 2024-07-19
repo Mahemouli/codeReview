@@ -9,9 +9,8 @@ on:
       - main
 
 jobs:
-  sonarqube:
-    runs-on: ubuntu-latest
-
+  sonar:
+    runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -25,39 +24,11 @@ jobs:
       - name: Cache SonarQube scanner
         uses: actions/cache@v3
         with:
-          path: ~/.sonar/cache
+          path: C:\SonarQube\sonarqube-10.6.0.92116\bin
           key: ${{ runner.os }}-sonar
-
-      - name: Download SonarQube scanner
-        run: |
-          curl -sSLo $HOME/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-          unzip $HOME/sonar-scanner.zip -d $HOME/
-          mv $HOME/sonar-scanner-4.6.2.2472-linux $HOME/sonar-scanner
-
-      - name: Configure SonarQube Scanner
-        run: |
-          echo "sonar.projectKey=codeReview" > $HOME/sonar-scanner/conf/sonar-scanner.properties
-          echo "sonar.host.url=https://ccde-61-95-213-22.ngrok-free.app" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
-          echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
-          echo "sonar.java.binaries=**/*.java" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
-
-      - name: Fix shebang in sonar-scanner
-        run: |
-          sed -i '1s|^.*$|#!/bin/bash|' $HOME/sonar-scanner/bin/sonar-scanner
-
-      - name: Print environment variables
-        run: printenv
-
-      - name: List files in sonar-scanner bin
-        run: ls -la $HOME/sonar-scanner/bin
 
       - name: Run SonarQube scan
         run: |
-          /bin/bash $HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true
+          C:\SonarQube\sonarqube-10.6.0.92116\bin\sonar-scanner.bat -Dsonar.verbose=true
         env:
-          JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64
-          PATH: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64/bin:$PATH
-
-      - name: Upload scan results
-        run: |
-          echo "SonarQube scan completed."
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
