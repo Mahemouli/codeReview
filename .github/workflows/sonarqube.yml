@@ -38,6 +38,7 @@ jobs:
           echo "sonar.projectKey=codeReview" > $HOME/sonar-scanner/conf/sonar-scanner.properties
           echo "sonar.host.url=https://ccde-61-95-213-22.ngrok-free.app/projects" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
           echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
+          echo "sonar.java.binaries=**/*.java" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
 
       - name: Run SonarQube scan
         run: |
