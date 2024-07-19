@@ -20,9 +20,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          
-      - name: Check Java version
-        run: java -version 
 
       - name: Cache SonarQube scanner
         uses: actions/cache@v3
@@ -43,11 +40,15 @@ jobs:
           echo "sonar.login=${{ secrets.SONAR_TOKEN }}" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
           echo "sonar.java.binaries=**/*.java" >> $HOME/sonar-scanner/conf/sonar-scanner.properties
 
+      - name: Check Java version
+        run: java -version
+
       - name: Run SonarQube scan
         env:
           JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64
+          PATH: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64/bin:$PATH
         run: |
-          $HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true
+          JAVA_HOME=/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64 $HOME/sonar-scanner/bin/sonar-scanner -Dsonar.verbose=true
 
       - name: Upload scan results
         run: |
